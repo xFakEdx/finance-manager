@@ -1,7 +1,7 @@
 package de.homebrewed.financemanager.external.mapper;
 
-import de.homebrewed.financemanager.domain.TransactionCategory;
-import de.homebrewed.financemanager.external.persistance.entity.TransactionCategoryEntity;
+import de.homebrewed.financemanager.domain.FinancialTransactionCategory;
+import de.homebrewed.financemanager.external.persistance.entity.FinancialTransactionCategoryEntity;
 
 public final class TransactionCategoryMapper {
 
@@ -9,10 +9,10 @@ public final class TransactionCategoryMapper {
     // Utility Klasse, keine Instanzierung
   }
 
-  public static TransactionCategory toDomain(TransactionCategoryEntity entity) {
+  public static FinancialTransactionCategory toDomain(FinancialTransactionCategoryEntity entity) {
     if (entity == null) {
       return null;
     }
-    return new TransactionCategory(entity.getId(), entity.getName());
+    return new FinancialTransactionCategory(entity.getId(), entity.getName());
   }
 }

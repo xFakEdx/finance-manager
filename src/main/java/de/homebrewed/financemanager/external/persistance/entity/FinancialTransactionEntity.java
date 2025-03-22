@@ -56,7 +56,7 @@ public class FinancialTransactionEntity {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "category_id")
-  private TransactionCategoryEntity category;
+  private FinancialTransactionCategoryEntity category;
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "account_id", nullable = false)

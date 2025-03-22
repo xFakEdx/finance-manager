@@ -1,10 +1,10 @@
-package de.homebrewed.financemanager.external.in.dto;
+package de.homebrewed.financemanager.shared.commands;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 
-public record CreateAccountRequest(
+public record CreateAccountCoomand(
     @NotBlank @Size(max = 255) String accountName,
     BigDecimal initialBalance
 ) {}

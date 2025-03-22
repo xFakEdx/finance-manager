@@ -1,7 +1,7 @@
 package de.homebrewed.financemanager.transactionvalidation;
 
-import de.homebrewed.financemanager.accounting.repository.AccountRepository;
-import de.homebrewed.financemanager.accounting.repository.FinancialTransactionRepository;
+import de.homebrewed.financemanager.external.persistance.repository.AccountRepository;
+import de.homebrewed.financemanager.external.persistance.repository.FinancialTransactionRepository;
 import de.homebrewed.financemanager.events.TransactionCreatedEvent;
 import de.homebrewed.financemanager.events.TransactionValidatedEvent;
 import lombok.RequiredArgsConstructor;

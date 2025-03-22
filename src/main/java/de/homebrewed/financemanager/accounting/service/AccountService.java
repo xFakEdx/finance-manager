@@ -1,57 +1,55 @@
 package de.homebrewed.financemanager.accounting.service;
 
-import de.homebrewed.financemanager.accounting.repository.AccountRepository;
 import de.homebrewed.financemanager.domain.Account;
-import de.homebrewed.financemanager.external.in.dto.CreateAccountRequest;
-import de.homebrewed.financemanager.external.mapper.AccountMapper;
-import de.homebrewed.financemanager.external.persistance.entity.AccountEntity;
-import de.homebrewed.financemanager.external.persistance.entity.FinancialTransactionEntity;
+import de.homebrewed.financemanager.domain.FinancialTransaction;
+import de.homebrewed.financemanager.shared.commands.CreateAccountCoomand;
 import java.math.BigDecimal;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class AccountService {
 
-  private final AccountRepository accountRepository;
+  private final AccountRepositoryService accountRepositoryService;
+  private final FinancialTransactionepositoryService financialTransactionRepositoryService;
 
-  public AccountService(AccountRepository accountRepository) {
-    this.accountRepository = accountRepository;
+  @Transactional
+  public Account createAccount(CreateAccountCoomand request) {
+
+    Account account =
+        Account.builder()
+            .accountName(request.accountName())
+            .balance(request.initialBalance() != null ? request.initialBalance() : BigDecimal.ZERO)
+            .build();
+
+    Account savedAccount = accountRepositoryService.save(account);
+    log.info("Account created: {}", savedAccount.getAccountName());
+    return savedAccount;
   }
 
   @Transactional
-  public Account createAccount(CreateAccountRequest request) {
+  public boolean applyTransaction(Long transactionId) {
+    FinancialTransaction financialTransaction =
+        financialTransactionRepositoryService.findById(transactionId);
 
-    AccountEntity entity = new AccountEntity();
-    entity.setAccountName(request.accountName());
-    entity.setBalance(
-        request.initialBalance() != null ? request.initialBalance() : BigDecimal.ZERO);
+    Account account = accountRepositoryService.findById(financialTransaction.accountId());
 
-    AccountEntity savedEntity = accountRepository.save(entity);
-
-    return AccountMapper.toDomain(savedEntity);
-  }
-
-  @Transactional
-  public boolean applyTransaction(FinancialTransactionEntity transaction) {
-    AccountEntity account =
-        accountRepository
-            .findById(transaction.getAccount().getId())
-            .orElseThrow(() -> new IllegalArgumentException("Account not found"));
-
+    final BigDecimal amount = financialTransaction.amount();
     BigDecimal newBalance =
-        switch (transaction.getTransactionType()) {
-          case DEPOSIT, REFUND, TRANSFER -> account.getBalance().add(transaction.getAmount());
-          case WITHDRAWAL, PAYMENT -> account.getBalance().subtract(transaction.getAmount());
+        switch (financialTransaction.transactionType()) {
+          case DEPOSIT, REFUND, TRANSFER -> account.getBalance().add(amount);
+          case WITHDRAWAL, PAYMENT -> account.getBalance().subtract(amount);
         };
 
     if (newBalanceIsInvalid(newBalance)) {
       return false;
     }
 
-    account.setBalance(newBalance);
-    accountRepository.save(account);
-
+    accountRepositoryService.updateBalance(account, newBalance);
     return true;
   }
 

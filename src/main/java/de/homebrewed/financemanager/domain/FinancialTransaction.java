@@ -8,7 +8,7 @@ import lombok.Builder;
 
 @Builder
 public record FinancialTransaction(Long id, UUID transactionName, FinancialTransactionType transactionType, BigDecimal amount,
-                                   Currency currency, LocalDateTime transactionDate, TransactionCategory category,
+                                   Currency currency, LocalDateTime transactionDate, FinancialTransactionCategory category,
                                    Long accountId,
                                    Boolean cleared) {
     

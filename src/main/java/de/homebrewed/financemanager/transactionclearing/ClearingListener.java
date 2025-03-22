@@ -1,6 +1,6 @@
 package de.homebrewed.financemanager.transactionclearing;
 
-import de.homebrewed.financemanager.accounting.repository.FinancialTransactionRepository;
+import de.homebrewed.financemanager.external.persistance.repository.FinancialTransactionRepository;
 import de.homebrewed.financemanager.events.TransactionClearedEvent;
 import de.homebrewed.financemanager.events.TransactionProcessedEvent;
 import de.homebrewed.financemanager.external.persistance.entity.AccountEntity;

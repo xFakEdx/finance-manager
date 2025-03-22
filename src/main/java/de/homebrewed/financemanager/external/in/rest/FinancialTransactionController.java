@@ -2,7 +2,7 @@ package de.homebrewed.financemanager.external.in.rest;
 
 import de.homebrewed.financemanager.accounting.service.FinancialTransactionService;
 import de.homebrewed.financemanager.domain.FinancialTransaction;
-import de.homebrewed.financemanager.external.in.dto.CreateTransactionRequest;
+import de.homebrewed.financemanager.shared.commands.CreateTransactionCommand;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +23,7 @@ public class FinancialTransactionController {
 
   @PostMapping
   public ResponseEntity<FinancialTransaction> createTransaction(
-      @RequestBody @Valid CreateTransactionRequest request) {
+      @RequestBody @Valid CreateTransactionCommand request) {
     FinancialTransaction financialTransaction =
         financialTransactionService.createTransaction(request);
     return new ResponseEntity<>(financialTransaction, HttpStatus.CREATED);
