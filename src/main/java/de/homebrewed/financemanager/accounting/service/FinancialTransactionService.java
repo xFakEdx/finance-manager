@@ -5,23 +5,27 @@ import de.homebrewed.financemanager.domain.FinancialTransaction;
 import de.homebrewed.financemanager.domain.FinancialTransactionCategory;
 import de.homebrewed.financemanager.domain.FinancialTransactionType;
 import de.homebrewed.financemanager.events.TransactionCreatedEvent;
+import de.homebrewed.financemanager.external.acl.AccountRepositoryAcl;
+import de.homebrewed.financemanager.external.acl.FinancialTransactionRepositoryAcl;
+import de.homebrewed.financemanager.external.persistance.service.FinancialTransactionCategoryRepositoryAclService;
 import de.homebrewed.financemanager.shared.commands.CreateTransactionCommand;
 import jakarta.transaction.Transactional;
 import java.util.Currency;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class FinancialTransactionService {
 
-  private final FinancialTransactionepositoryService financialTransactionRepositoryService;
-  private final AccountRepositoryService accountRepositoryService;
-  private final FinancialTransactionCategoryRepositoryService
+  private final FinancialTransactionRepositoryAcl financialTransactionRepositoryService;
+  private final AccountRepositoryAcl accountRepositoryService;
+  private final FinancialTransactionCategoryRepositoryAclService
       financialTransactionCategoryRepositoryService;
   private final ApplicationEventPublisher publisher;
 
@@ -45,7 +49,7 @@ public class FinancialTransactionService {
             .transactionDate(request.transactionDate())
             .category(financialTransactionCategory)
             .cleared(request.cleared() != null ? request.cleared() : false)
-            .accountId(account.getId())
+            .accountId(account.id())
             .build();
 
     FinancialTransaction savedFinacialTransaction =
@@ -54,9 +58,8 @@ public class FinancialTransactionService {
     log.info(
         "Transaction {} successfully created for Account {}",
         savedFinacialTransaction.id(),
-        account.getId());
+        account.id());
 
-    // <-- START ApplicationEvent hier!
     publisher.publishEvent(new TransactionCreatedEvent(savedFinacialTransaction.id()));
 
     return savedFinacialTransaction;

@@ -34,4 +34,3 @@ spring:
 logging:
   level:
     root: INFO
-    de.homebrewed.financemanager: DEBUG

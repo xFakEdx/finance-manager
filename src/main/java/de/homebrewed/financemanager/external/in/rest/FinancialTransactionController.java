@@ -1,9 +1,13 @@
 package de.homebrewed.financemanager.external.in.rest;
 
-import de.homebrewed.financemanager.accounting.service.FinancialTransactionService;
 import de.homebrewed.financemanager.domain.FinancialTransaction;
+import de.homebrewed.financemanager.events.FinancialTransactionCreationEvent;
 import de.homebrewed.financemanager.shared.commands.CreateTransactionCommand;
 import jakarta.validation.Valid;
+import java.util.UUID;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,19 +17,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/transactions")
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class FinancialTransactionController {
 
-  private final FinancialTransactionService financialTransactionService;
-
-  public FinancialTransactionController(FinancialTransactionService financialTransactionService) {
-    this.financialTransactionService = financialTransactionService;
-  }
+  private final ApplicationEventPublisher eventPublisher;
 
   @PostMapping
   public ResponseEntity<FinancialTransaction> createTransaction(
-      @RequestBody @Valid CreateTransactionCommand request) {
-    FinancialTransaction financialTransaction =
-        financialTransactionService.createTransaction(request);
-    return new ResponseEntity<>(financialTransaction, HttpStatus.CREATED);
+      @RequestBody @Valid CreateTransactionCommand createTransactionCommand) {
+    eventPublisher.publishEvent(
+        new FinancialTransactionCreationEvent(
+            UUID.randomUUID().toString(), createTransactionCommand));
+    return new ResponseEntity<>(HttpStatus.ACCEPTED);
   }
 }

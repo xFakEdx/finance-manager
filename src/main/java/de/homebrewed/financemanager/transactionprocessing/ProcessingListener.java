@@ -3,10 +3,9 @@ package de.homebrewed.financemanager.transactionprocessing;
 import de.homebrewed.financemanager.accounting.service.AccountService;
 import de.homebrewed.financemanager.events.TransactionProcessedEvent;
 import de.homebrewed.financemanager.events.TransactionValidatedEvent;
-import de.homebrewed.financemanager.external.persistance.repository.FinancialTransactionRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -16,11 +15,10 @@ import org.springframework.transaction.event.TransactionalEventListener;
 
 @Slf4j
 @Component
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ProcessingListener {
 
   private final AccountService accountService;
-  private final FinancialTransactionRepository transactionRepository;
   private final ApplicationEventPublisher publisher;
 
   @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -28,19 +26,15 @@ public class ProcessingListener {
   public void handleTransactionValidated(TransactionValidatedEvent event) {
     if (!event.isValid()) return;
 
-    Long txId = event.transactionId();
-    transactionRepository
-        .findById(txId)
-        .orElseThrow(() -> new EntityNotFoundException("No Transaction found with id " + txId));
-
-    boolean success = accountService.applyTransaction(txId);
+    Long transactionId = event.transactionId();
+    boolean success = accountService.applyTransaction(transactionId);
 
     if (!success) {
-      log.error("Transaction processing failed for Transaction {}", txId);
+      log.error("Transaction processing failed for Transaction {}", transactionId);
     } else {
-      log.info("Transaction processing succeeded for Transaction {}", txId);
+      log.info("Transaction processing succeeded for Transaction {}", transactionId);
     }
 
-    publisher.publishEvent(new TransactionProcessedEvent(txId, success));
+    publisher.publishEvent(new TransactionProcessedEvent(transactionId, success));
   }
 }

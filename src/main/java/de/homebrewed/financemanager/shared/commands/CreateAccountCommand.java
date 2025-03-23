@@ -4,7 +4,5 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 
-public record CreateAccountCoomand(
-    @NotBlank @Size(max = 255) String accountName,
-    BigDecimal initialBalance
-) {}
+public record CreateAccountCommand(
+    @NotBlank @Size(max = 255) String accountName, BigDecimal initialBalance) {}

@@ -1,11 +1,5 @@
-@ApplicationModule(
-    displayName = "TransactionProcessing",
-    allowedDependencies = {
-      "external",
-      "accounting :: accounting-service",
-      "external :: persistence-repository",
-      "events"
-    })
+// @NamedInterface(name = "transaction-processing")
+@ApplicationModule(displayName = "Transaction Processing", type = ApplicationModule.Type.OPEN)
 package de.homebrewed.financemanager.transactionprocessing;
 
 import org.springframework.modulith.ApplicationModule;

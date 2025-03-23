@@ -5,4 +5,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TransactionCategoryRepository extends JpaRepository<FinancialTransactionCategoryEntity, Long> {}
+public interface FinancialTransactionCategoryRepository extends JpaRepository<FinancialTransactionCategoryEntity, Long> {}
