@@ -1,37 +1,57 @@
-Just a playground for an app using Spring Modulith, Kafka Externalization and Spring ApplicationEvents
+# Finance Manager Playground
 
-HowTo
+This is a playground project for an application using:
 
-1. Run the mariaDB and kafka docker-compose scripts under path src/main/resources/environment/db and 
-   src/main/resources/environment/kafka for instance with the command docker-compose up -d
-2. Run the finance manager SpringBoot application.
-3. There will be 2 REST Endpinots available to create an account and to send a transaction. The transaction should 
-   start the workflow.
-4. Creating an account with:
+- **Spring Modulith**
+- **Kafka Externalization**
+- **Spring ApplicationEvents**
 
+## How to Run
+
+### 1. Start the Required Services
+Run the MariaDB and Kafka Docker Compose scripts located under:
+
+- `src/main/resources/environment/db`
+- `src/main/resources/environment/kafka`
+
+Execute the following command in each directory:
+```sh
+docker-compose up -d
+```
+
+### 2. Start the Finance Manager Application
+Run the Spring Boot application to enable the available REST endpoints.
+
+## Available REST Endpoints
+
+### Create an Account
+```sh
 curl -X POST "http://localhost:8080/api/accounts" \
--H "Content-Type: application/json" \
--d '{
-"accountName": "Mein Sparkonto",
-"initialBalance": 1000.00
-}'
+     -H "Content-Type: application/json" \
+     -d '{
+           "accountName": "Mein Sparkonto",
+           "initialBalance": 1000.00
+         }'
+```
 
-5. Creating/sending a transaction with:
-
+### Create & Send a Transaction
+```sh
 curl -X POST "http://localhost:8080/api/transactions" \
--H "Content-Type: application/json" \
--d '{
-"financialTransactionType": "DEPOSIT",
-"amount": 10.00,
-"currency": "EUR",
-"transactionDate": "2025-03-15T18:00:00",
-"categoryId": 5,
-"accountId": 1,
-"cleared": false
-}'
+     -H "Content-Type: application/json" \
+     -d '{
+           "financialTransactionType": "DEPOSIT",
+           "amount": 10.00,
+           "currency": "EUR",
+           "transactionDate": "2025-03-15T18:00:00",
+           "categoryId": 5,
+           "accountId": 1,
+           "cleared": false
+         }'
+```
 
-After this steps the workflow should start and the results will be stored in the database tables account and 
-transaction.
+## Workflow Execution
+Once a transaction is created, the workflow will start automatically.
+The results will be stored in the database tables:
 
-
-
+- **`account`**
+- **`transaction`**
