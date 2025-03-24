@@ -1,13 +1,10 @@
 package de.homebrewed.financemanager.external.in.rest;
 
-import de.homebrewed.financemanager.domain.Account;
-import de.homebrewed.financemanager.events.AccountCreationEvent;
+import de.homebrewed.financemanager.external.in.rest.service.AccountEventService;
 import de.homebrewed.financemanager.shared.commands.CreateAccountCommand;
 import jakarta.validation.Valid;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,13 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class AccountController {
 
-  private final ApplicationEventPublisher publisher;
+  private final AccountEventService accountEventService;
 
   @PostMapping
-  public ResponseEntity<Account> createAccount(
+  public ResponseEntity<String> createAccount(
       @RequestBody @Valid CreateAccountCommand createAccountCommand) {
-    publisher.publishEvent(
-        new AccountCreationEvent(UUID.randomUUID().toString(), createAccountCommand));
-    return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    String uuid =
+        accountEventService.forwardTransactionalAccountCreationEvent(createAccountCommand);
+    return new ResponseEntity<>(uuid, HttpStatus.ACCEPTED);
   }
 }
