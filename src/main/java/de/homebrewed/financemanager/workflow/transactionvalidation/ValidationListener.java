@@ -1,4 +1,4 @@
-package de.homebrewed.financemanager.transactionvalidation;
+package de.homebrewed.financemanager.workflow.transactionvalidation;
 
 import de.homebrewed.financemanager.domain.Account;
 import de.homebrewed.financemanager.domain.FinancialTransaction;

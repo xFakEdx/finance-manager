@@ -1,4 +1,4 @@
-package de.homebrewed.financemanager.transactioncompletion;
+package de.homebrewed.financemanager.workflow.transactioncompletion;
 
 import de.homebrewed.financemanager.events.TransactionClearedEvent;
 import lombok.extern.slf4j.Slf4j;

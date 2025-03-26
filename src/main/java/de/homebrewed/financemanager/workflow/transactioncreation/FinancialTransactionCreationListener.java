@@ -1,4 +1,4 @@
-package de.homebrewed.financemanager.transactioncreation;
+package de.homebrewed.financemanager.workflow.transactioncreation;
 
 import de.homebrewed.financemanager.accounting.service.FinancialTransactionService;
 import de.homebrewed.financemanager.domain.FinancialTransaction;

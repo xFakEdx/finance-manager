@@ -1,4 +1,4 @@
-package de.homebrewed.financemanager.transactioncompletion;
+package de.homebrewed.financemanager.workflow.transactioncompletion;
 
 import java.math.BigDecimal;
 

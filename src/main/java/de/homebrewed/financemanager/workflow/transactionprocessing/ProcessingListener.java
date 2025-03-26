@@ -1,4 +1,4 @@
-package de.homebrewed.financemanager.transactionprocessing;
+package de.homebrewed.financemanager.workflow.transactionprocessing;
 
 import de.homebrewed.financemanager.accounting.service.AccountService;
 import de.homebrewed.financemanager.events.TransactionProcessedEvent;

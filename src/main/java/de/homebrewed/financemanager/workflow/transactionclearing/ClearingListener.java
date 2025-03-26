@@ -1,4 +1,4 @@
-package de.homebrewed.financemanager.transactionclearing;
+package de.homebrewed.financemanager.workflow.transactionclearing;
 
 import de.homebrewed.financemanager.domain.Account;
 import de.homebrewed.financemanager.domain.FinancialTransaction;

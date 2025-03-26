@@ -1,4 +1,4 @@
-package de.homebrewed.financemanager.accountcreation;
+package de.homebrewed.financemanager.workflow.accountcreation;
 
 import de.homebrewed.financemanager.accounting.service.AccountService;
 import de.homebrewed.financemanager.domain.Account;
@@ -18,7 +18,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 public class AccountCreationListener {
 
   private final AccountService accountService;
-
+  
   @Transactional(propagation = Propagation.REQUIRES_NEW)
   @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
   public void handleAccountCreation(AccountCreationEvent event) {

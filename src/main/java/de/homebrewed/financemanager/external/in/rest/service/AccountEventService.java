@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
@@ -17,7 +16,7 @@ public class AccountEventService {
 
   private final ApplicationEventPublisher publisher;
 
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  @Transactional
   public String forwardTransactionalAccountCreationEvent(CreateAccountCommand createAccountCommand) {
     String creationAccountUuid = UUID.randomUUID().toString();
     publisher.publishEvent(new AccountCreationEvent(creationAccountUuid, createAccountCommand));
