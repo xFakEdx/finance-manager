@@ -45,8 +45,8 @@ public class FinancialTransactionRepositoryService implements FinancialTransacti
   }
   
   @Override
-  public FinancialTransaction updateCleared(Long transactionId, Boolean cleared) {
-    return FinancialTransactionMapper.toDomain(financialTransactionRepository.updateCleared(transactionId, cleared));
+  public void updateCleared(Long transactionId, Boolean cleared) {
+    financialTransactionRepository.updateCleared(transactionId, cleared);
   }
   
   

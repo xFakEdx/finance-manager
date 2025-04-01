@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,14 +26,13 @@ public class ClearingListener {
   private final AccountRepositoryAcl accountRepositoryService;
   private final ApplicationEventPublisher publisher;
 
+  @Async
   @Transactional(propagation = Propagation.REQUIRES_NEW)
   @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
   public void handleTransactionProcessed(TransactionProcessedEvent event) {
-    FinancialTransaction transaction =
-        financialTransactionRepositoryService.findById(event.transactionId());
-
+        financialTransactionRepositoryService.updateCleared(event.transactionId(), event.success());
     FinancialTransaction updatedTransaction =
-        financialTransactionRepositoryService.updateCleared(transaction.id(), event.success());
+            financialTransactionRepositoryService.findById(event.transactionId());
     Account accountAfterSaving = accountRepositoryService.findById(updatedTransaction.accountId());
     Boolean clearedAfterUpdate = updatedTransaction.cleared();
     log.info("Transaction {} clearing status set to {}", event.transactionId(), clearedAfterUpdate);

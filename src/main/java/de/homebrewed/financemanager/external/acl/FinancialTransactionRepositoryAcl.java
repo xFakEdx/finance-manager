@@ -7,6 +7,6 @@ public interface FinancialTransactionRepositoryAcl {
 
   FinancialTransaction save(FinancialTransaction financialTransaction);
 
-  FinancialTransaction updateCleared(Long transactionId, Boolean cleared);
+  void updateCleared(Long transactionId, Boolean cleared);
   
 }

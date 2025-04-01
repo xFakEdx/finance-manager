@@ -1,5 +1,5 @@
 server:
-  port: 9000
+  port: 9001
 spring:
   application:
     name: financemanager
@@ -35,4 +35,4 @@ spring:
 
 logging:
   level:
-    root: DEBUG
+    root: info

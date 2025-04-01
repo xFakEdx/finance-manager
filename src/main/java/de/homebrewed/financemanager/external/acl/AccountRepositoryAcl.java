@@ -8,5 +8,5 @@ public interface AccountRepositoryAcl {
 
   Account findById(Long id);
 
-  Account updateBalance(Long id, BigDecimal newBalance);
+  void updateBalance(Long id, BigDecimal newBalance);
 }

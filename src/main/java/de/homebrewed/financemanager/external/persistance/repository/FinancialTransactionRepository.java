@@ -18,5 +18,5 @@ public interface FinancialTransactionRepository
                     """,
       nativeQuery = true)
   @Modifying
-  FinancialTransactionEntity updateCleared(@Param("id") Long id, @Param("cleared") Boolean cleared);
+  void updateCleared(@Param("id") Long id, @Param("cleared") Boolean cleared);
 }

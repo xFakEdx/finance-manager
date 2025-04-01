@@ -33,7 +33,7 @@ public class AccountRepositoryService implements AccountRepositoryAcl {
   }
 
   @Override
-  public Account updateBalance(Long id, BigDecimal balance) {
-    return AccountMapper.toDomain(accountRepository.updateBalance(id, balance));
+  public void updateBalance(Long id, BigDecimal balance) {
+    accountRepository.updateBalance(id, balance);
   }
 }

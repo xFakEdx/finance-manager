@@ -19,8 +19,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebM
 import org.springframework.modulith.test.ApplicationModuleTest;
 import org.springframework.modulith.test.Scenario;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
-@ActiveProfiles("test")
+@ActiveProfiles(profiles = {"test"})
 @ApplicationModuleTest(ApplicationModuleTest.BootstrapMode.DIRECT_DEPENDENCIES)
 @AutoConfigureWebMvc
 @RequiredArgsConstructor
@@ -30,15 +31,16 @@ class TransactionWorkflowModuleTest {
   private final FinancialTransactionRepository financialTransactionRepository;
 
   @Test
-  void createAccount(Scenario scenario) {
+  @Transactional
+  void createAccountAndProcessTransaction(Scenario scenario) {
     // 1st Creating an account (usually via REST)
     var uuidAccount = UUID.randomUUID().toString();
-    BigDecimal initialBalance = new BigDecimal("10000");
+    BigDecimal initialBalance = new BigDecimal("10000.00");
     CreateAccountCommand createAccountCommand =
         new CreateAccountCommand("test checking account", initialBalance);
     scenario
         .publish(() -> new AccountCreationEvent(uuidAccount, createAccountCommand))
-        .andWaitForStateChange(accountRepository::findAll)
+        .andWaitForStateChange(accountRepository::findAll, it -> !it.isEmpty())
         .andVerify(
             result -> {
               assertThat(result).hasSize(1);
@@ -56,7 +58,7 @@ class TransactionWorkflowModuleTest {
     scenario
         .publish(
             () -> new FinancialTransactionCreationEvent(uuidTransaction, createTransactionCommand))
-        .andWaitForStateChange(financialTransactionRepository::findAll)
+        .andWaitForStateChange(financialTransactionRepository::findAll, it -> !it.isEmpty())
         .andVerify(
             result -> {
               assertThat(result).hasSize(1);

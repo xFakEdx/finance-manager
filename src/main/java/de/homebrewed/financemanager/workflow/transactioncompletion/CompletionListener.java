@@ -3,6 +3,7 @@ package de.homebrewed.financemanager.workflow.transactioncompletion;
 import de.homebrewed.financemanager.events.TransactionClearedEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +21,8 @@ public class CompletionListener {
     public CompletionListener(KafkaTemplate<String, TransactionNotification> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
-    
+
+    @Async
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handleTransactionCleared(TransactionClearedEvent event) {

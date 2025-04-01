@@ -18,5 +18,5 @@ public interface AccountRepository extends JpaRepository<AccountEntity, Long> {
           """,
       nativeQuery = true)
   @Modifying
-  AccountEntity updateBalance(@Param("id") Long id, @Param("newBalance") BigDecimal newBalance);
+  void updateBalance(@Param("id") Long id, @Param("newBalance") BigDecimal newBalance);
 }

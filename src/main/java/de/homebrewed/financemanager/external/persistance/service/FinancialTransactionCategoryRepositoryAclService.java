@@ -22,6 +22,6 @@ public class FinancialTransactionCategoryRepositoryAclService
         .findById(id)
         .map(FinancialTransactionCategoryMapper::toDomain)
         .orElseThrow(
-            () -> new EntityNotFoundException("FinancialCategory with " + id + "not found."));
+            () -> new EntityNotFoundException("FinancialCategory with " + id + " not found."));
   }
 }

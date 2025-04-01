@@ -6,8 +6,8 @@ import de.homebrewed.financemanager.domain.FinancialTransactionCategory;
 import de.homebrewed.financemanager.domain.FinancialTransactionType;
 import de.homebrewed.financemanager.events.TransactionCreatedEvent;
 import de.homebrewed.financemanager.external.acl.AccountRepositoryAcl;
+import de.homebrewed.financemanager.external.acl.FinancialTransactionCategoryRepositoryAcl;
 import de.homebrewed.financemanager.external.acl.FinancialTransactionRepositoryAcl;
-import de.homebrewed.financemanager.external.persistance.service.FinancialTransactionCategoryRepositoryAclService;
 import de.homebrewed.financemanager.shared.commands.CreateTransactionCommand;
 import jakarta.transaction.Transactional;
 import java.util.Currency;
@@ -25,7 +25,7 @@ public class FinancialTransactionService {
 
   private final FinancialTransactionRepositoryAcl financialTransactionRepositoryService;
   private final AccountRepositoryAcl accountRepositoryService;
-  private final FinancialTransactionCategoryRepositoryAclService
+  private final FinancialTransactionCategoryRepositoryAcl
       financialTransactionCategoryRepositoryService;
   private final ApplicationEventPublisher publisher;
 

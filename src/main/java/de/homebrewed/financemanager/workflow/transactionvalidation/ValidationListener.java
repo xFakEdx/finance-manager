@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,7 @@ public class ValidationListener {
   private final AccountRepositoryAcl accountRepositoryService;
   private final ApplicationEventPublisher publisher;
 
+  @Async
   @Transactional(propagation = Propagation.REQUIRES_NEW)
   @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
   public void handleTransactionCreated(TransactionCreatedEvent event) {

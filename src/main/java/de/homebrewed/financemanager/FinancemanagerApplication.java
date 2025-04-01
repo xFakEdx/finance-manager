@@ -2,10 +2,10 @@ package de.homebrewed.financemanager;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"de.homebrewed.financemanager.external"})
+@EnableTransactionManagement
 public class FinancemanagerApplication {
 
   public static void main(String[] args) {
